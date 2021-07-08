@@ -307,40 +307,39 @@ class Widget(QtWidgets.QWidget, Ui_Form):
 
 def WallHack_ESP():
 
-	ESPR_, ESPG_, ESPB_ = float(ESPR / 255), float(ESPG / 255), float(ESPB / 255)
+    ESPR_, ESPG_, ESPB_ = float(ESPR / 255), float(ESPG / 255), float(ESPB / 255)
 
-	while wallHack_esp_status:
+    while wallHack_esp_status:
 
-		player = pm.read_int(client + dwLocalPlayer)
-		glow_manager = pm.read_int(client + dwGlowObjectManager)
-		team  = pm.read_int(player + m_iTeamNum)
+        player = pm.read_int(client + dwLocalPlayer)
+        glow_manager = pm.read_int(client + dwGlowObjectManager)
+        team  = pm.read_int(player + m_iTeamNum)
 
-		for i in range(1, 32):
-			entity = pm.read_int(client + dwEntityList + i * 0x10)
+        for i in range(1, 32):
+            entity = pm.read_int(client + dwEntityList + i * 0x10)
 
-			if entity:
-				entity_team_id = pm.read_int(entity + m_iTeamNum)
-				entity_glow = pm.read_int(entity + m_iGlowIndex)
+            if entity:
+                entity_team_id = pm.read_int(entity + m_iTeamNum)
+                entity_glow = pm.read_int(entity + m_iGlowIndex)
 
-				if entity_team_id != team :
+                if entity_team_id != team :
 
-					if dynamic_status == True:
+                    if dynamic_status == True:
 
-						entity_hp = pm.read_int(entity + m_iHealth)
-						if entity_hp > 60:
-							ESPR_, ESPG_, ESPB_ = ESPR, ESPG, ESPB
-						if entity_hp < 40:
-							ESPR_, ESPG_, ESPB_ = 1,1,0
-						if entity_hp < 20:
-							ESPR_, ESPG_, ESPB_ = 1,0,0
+                        entity_hp = pm.read_int(entity + m_iHealth)
+                        if entity_hp > 60:
+                            ESPR_, ESPG_, ESPB_ = ESPR, ESPG, ESPB
+                        if entity_hp < 40:
+                            ESPR_, ESPG_, ESPB_ = 1,1,0
+                        if entity_hp < 20:
+                            ESPR_, ESPG_, ESPB_ = 1,0,0
 
-					pm.write_float(glow_manager + entity_glow * 0x38 + 0x4, float(ESPR_))
-					pm.write_float(glow_manager + entity_glow * 0x38 + 0x8, float(ESPG_))
-					pm.write_float(glow_manager + entity_glow * 0x38 + 0xC, float(ESPB_))
-					pm.write_float(glow_manager + entity_glow * 0x38 + 0x10, length)
-					pm.write_int(glow_manager + entity_glow * 0x38 + 0x24, 1)
+                    pm.write_float(glow_manager + entity_glow * 0x38 + 0x8, float(ESPR_))
+                    pm.write_float(glow_manager + entity_glow * 0x38 + 0xC, float(ESPG_))
+                    pm.write_float(glow_manager + entity_glow * 0x38 + 0x10, float(ESPB_))
+                    pm.write_float(glow_manager + entity_glow * 0x38 + 0x14, length)
 
-		time.sleep(0.01)
+                    pm.write_int(glow_manager + entity_glow * 0x38 + 0x28, 1)
 
 def Chams():
 	while wallHack_chams_status:
