@@ -340,6 +340,8 @@ def WallHack_ESP():
                     pm.write_float(glow_manager + entity_glow * 0x38 + 0x14, length)
 
                     pm.write_int(glow_manager + entity_glow * 0x38 + 0x28, 1)
+         
+        time.sleep(0.01)
 
 def Chams():
 	while wallHack_chams_status:
